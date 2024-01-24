@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: AppTheme.defaultAppTheme,
             // home: const CarInspectionPageView(),
+            // home: const CountdownTimer(),
             home: VehicleVerificationScreen(
               cameras: cameras,
             ),
