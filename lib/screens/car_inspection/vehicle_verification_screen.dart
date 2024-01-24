@@ -101,6 +101,17 @@ class _VehicleVerificationScreenState extends State<VehicleVerificationScreen> {
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
+                              Screenshot(
+                                controller: screenshotController,
+                                child: Container(
+                                  height: 1.sh,
+                                  width: 1.sw,
+                                  // color: Colors.transparent,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black)),
+                                  child: CameraPreview(controller),
+                                ),
+                              ),
                               CameraPreview(
                                 controller,
                                 child: Row(
@@ -257,17 +268,6 @@ class _VehicleVerificationScreenState extends State<VehicleVerificationScreen> {
                                   ],
                                 ),
                               ),
-                              Screenshot.(
-                                controller: screenshotController,
-                                child: Container(
-                                  height: 300,
-                                  width: 300,
-                                  color: Colors.transparent,
-                                  // decoration: BoxDecoration(
-                                  //     border: Border.all(color: Colors.black)),
-                                  // child: CameraPreview(controller),
-                                ),
-                              )
                             ],
                           ),
                         )),
@@ -283,19 +283,6 @@ class _VehicleVerificationScreenState extends State<VehicleVerificationScreen> {
         //         child: Text("Landscape"),
         //       ),
         );
-  }
-
-  Future<void> captureAndSave() async {
-    RenderRepaintBoundary boundary =
-        _globalKey.currentContext!.findRenderObject();
-    ui.Image image = await boundary.toImage();
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData.buffer.asUint8List();
-
-    // Now you can save or use the captured image (pngBytes)
-    // Example: save to file
-    final directory = (await getApplicationDocumentsDirectory()).path;
-    File('$directory/captured_image.png').writeAsBytesSync(pngBytes);
   }
 }
 
