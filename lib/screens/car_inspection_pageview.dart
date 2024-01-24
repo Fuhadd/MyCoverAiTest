@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:camera/camera.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test_design/constants/custom_colors.dart';
 import 'package:test_design/constants/custom_string.dart';
+import 'package:test_design/screens/vehicle_verification_screen.dart';
 import 'package:test_design/utils/enum.dart';
 import 'package:test_design/utils/spacers.dart';
 
@@ -223,12 +227,26 @@ class _CarInspectionPageViewState extends State<CarInspectionPageView> {
                 ),
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.ease,
-                      );
-                    },
+                    onTap: _currentPage == 7
+                        ? () async {
+                            List<CameraDescription> cameras =
+                                await availableCameras();
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      VehicleVerificationScreen(
+                                    cameras: cameras,
+                                  ),
+                                ));
+                          }
+                        : () {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.ease,
+                            );
+                          },
                     child: Container(
                       height: 50.h,
                       decoration: BoxDecoration(

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:test_design/constants/custom_colors.dart';
 import 'package:test_design/constants/custom_string.dart';
-import 'package:test_design/screens/car_inspection/vehicle_verification_screen.dart';
 import 'package:test_design/utils/spacers.dart';
 
 class CaptureSideContainer extends StatelessWidget {
