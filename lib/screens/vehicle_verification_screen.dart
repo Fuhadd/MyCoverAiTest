@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:test_design/constants/custom_colors.dart';
 import 'package:test_design/constants/custom_string.dart';
@@ -31,6 +33,7 @@ class VehicleVerificationScreen extends StatefulHookConsumerWidget {
 
 class _VehicleVerificationScreenState
     extends ConsumerState<VehicleVerificationScreen> {
+  bool isLoading = false;
   Uint8List? _imageFile;
   ScreenshotController screenshotController = ScreenshotController();
   late CameraController controller;
@@ -39,23 +42,44 @@ class _VehicleVerificationScreenState
   @override
   void initState() {
     controller = CameraController(widget.cameras[0], ResolutionPreset.max);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            break;
-          default:
-            break;
-        }
-      }
-    });
+
+    checkPermissions();
 
     super.initState();
+  }
+
+  Future<void> checkPermissions() async {
+    try {
+      await controller.initialize();
+    } on CameraException catch (e) {
+      if (e.code == 'CameraAccessDenied') {
+        // checkPermissions();
+        showDialogModal(
+          context: context,
+          title: "Camera Permission Required",
+          subTitle:
+              "Please open settings, enable camera permission for the app, and restart the app to proceed with verification.",
+          onPressed: () => openAppSettings(),
+          okText: "Open Settings",
+        );
+
+        // Navigator.pop(context);
+      } else if (e.code == "AudioAccessDenied") {
+        // checkPermissions();
+        showDialogModal(
+          context: context,
+          title: "Audio Permission Required",
+          subTitle:
+              "Please open settings, enable audio permission for the app, and restart the app to proceed with verification.",
+          onPressed: () => openAppSettings(),
+          okText: "Open Settings",
+        );
+
+        // Navigator.pop(context);
+      } else {
+        // Handle other errors
+      }
+    }
   }
 
   @override
@@ -241,7 +265,11 @@ class _VehicleVerificationScreenState
                                                   ),
                                                 ),
                                                 CaptureSideContainer(
+                                                  isLoading: isLoading,
                                                   onTap: () async {
+                                                    setState(() {
+                                                      isLoading = true;
+                                                    });
                                                     _imageFile =
                                                         await screenshotController
                                                             .capture();
@@ -257,15 +285,9 @@ class _VehicleVerificationScreenState
                                                         builder: (BuildContext
                                                             context) {
                                                           return Center(
-                                                            child: Hero(
-                                                              tag:
-                                                                  'imagePreview',
-                                                              child: Material(
-                                                                child: SelectedImageContainer(
-                                                                    imageFile:
-                                                                        _imageFile),
-                                                              ),
-                                                            ),
+                                                            child: SelectedImageContainer(
+                                                                imageFile:
+                                                                    _imageFile),
                                                           );
                                                         },
                                                       );
@@ -277,6 +299,9 @@ class _VehicleVerificationScreenState
                                                             .pop();
                                                         var currentStep = ref.watch(
                                                             verificationStepProvider);
+                                                        setState(() {
+                                                          isLoading = false;
+                                                        });
 
                                                         if (currentStep ==
                                                             CarVerificationStep
@@ -560,92 +585,12 @@ class _VehicleVerificationScreenState
                                                                       .notifier)
                                                               .state = 9;
 
-                                                          showGeneralDialog(
+                                                          showDialogModal(
                                                               context: context,
-                                                              barrierDismissible:
-                                                                  false,
-                                                              barrierLabel:
-                                                                  MaterialLocalizations
-                                                                          .of(
-                                                                              context)
-                                                                      .modalBarrierDismissLabel,
-                                                              barrierColor:
-                                                                  Colors
-                                                                      .black45,
-                                                              transitionDuration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          200),
-                                                              pageBuilder: (BuildContext
-                                                                      buildContext,
-                                                                  Animation
-                                                                      animation,
-                                                                  Animation
-                                                                      secondaryAnimation) {
-                                                                return Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(
-                                                                          20),
-                                                                  child:
-                                                                      Material(
-                                                                    animationDuration:
-                                                                        const Duration(
-                                                                            milliseconds:
-                                                                                500),
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10),
-                                                                    color: Colors
-                                                                        .white,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .all(
-                                                                          25),
-                                                                      child:
-                                                                          Column(
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        children: [
-                                                                          const Icon(
-                                                                            Icons.check_circle,
-                                                                            color:
-                                                                                Colors.green,
-                                                                            size:
-                                                                                70,
-                                                                          ),
-                                                                          const SizedBox(
-                                                                              height: 20),
-                                                                          const Text(
-                                                                            "Verification Successful!",
-                                                                            style:
-                                                                                TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                                                                          ),
-                                                                          const SizedBox(
-                                                                              height: 20),
-                                                                          const Text(
-                                                                            "Congratulations! Your verification process has been completed successfully.",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: 16,
-                                                                            ),
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                          ),
-                                                                          const SizedBox(
-                                                                              height: 25),
-                                                                          ElevatedButton(
-                                                                              onPressed: () {
-                                                                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const CarInspectionPageView()), (route) => false);
-                                                                              },
-                                                                              child: const Text("Okay"))
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              });
+                                                              title:
+                                                                  "Verification Successful!",
+                                                              subTitle:
+                                                                  "Congratulations! Your verification process has been completed successfully.");
                                                         }
                                                       },
                                                     )
@@ -690,5 +635,73 @@ class _VehicleVerificationScreenState
                 ],
               )
             : Container());
+  }
+
+  showDialogModal(
+      {required BuildContext context,
+      required String title,
+      required String subTitle,
+      final String? okText,
+      void Function()? onPressed}) {
+    return showGeneralDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.black45,
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (BuildContext buildContext, Animation animation,
+            Animation secondaryAnimation) {
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: Material(
+              animationDuration: const Duration(milliseconds: 500),
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(25),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                      size: 70,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      subTitle,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 25),
+                    ElevatedButton(
+                      onPressed: onPressed ??
+                          () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CarInspectionPageView()),
+                                (route) => false);
+                          },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: CustomColors.greenColor,
+                      ),
+                      child: Text(okText ?? "Okay"),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

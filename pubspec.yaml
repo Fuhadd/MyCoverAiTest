@@ -33,10 +33,12 @@ dependencies:
   dotted_border: ^2.1.0
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.9
   hooks_riverpod: ^2.4.9
   lottie: ^2.7.0
+  permission_handler: ^11.0.1
   screenshot: ^2.1.0
 
 dev_dependencies:
@@ -49,6 +51,16 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"
+  adaptive_icon_foreground: "assets/images/app_icon.png"
+  background_color: "#FFFFFFFF"
+  adaptive_icon_background: "#FFFFFFFF"
+  remove_alpha_ios: true
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

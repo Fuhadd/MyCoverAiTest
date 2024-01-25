@@ -29,30 +29,28 @@ class _CarInspectionPageViewState extends State<CarInspectionPageView> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: MediaQuery.of(context).orientation == Orientation.landscape
-            ? Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Lottie.asset(
-                        ConstantString.rotatePhone,
-                        height: 250.h,
-                        width: 250.h,
-                        animate: true,
-                        repeat: true,
-                        reverse: false,
-                        fit: BoxFit.contain,
-                      ),
-                      Text(
-                        "Rotate Device",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w600,
-                            color: CustomColors.gray700Color),
-                      ),
-                    ],
-                  ),
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset(
+                      ConstantString.rotatePhone,
+                      height: 250.h,
+                      width: 250.h,
+                      animate: true,
+                      repeat: true,
+                      reverse: false,
+                      fit: BoxFit.contain,
+                    ),
+                    Text(
+                      "Rotate Device",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: CustomColors.gray700Color),
+                    ),
+                  ],
                 ),
               )
             : Column(
