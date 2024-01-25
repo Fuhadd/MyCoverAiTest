@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:test_design/constants/custom_colors.dart';
-import 'package:test_design/constants/custom_string.dart';
-import 'package:test_design/screens/vehicle_verification_screen.dart';
 import 'package:test_design/utils/enum.dart';
 import 'package:test_design/utils/spacers.dart';
+import 'package:test_design/widgets/custom_button.dart';
 
 class StartSideContainer extends StatelessWidget {
   final CarVerificationStep step;
@@ -28,7 +27,7 @@ class StartSideContainer extends StatelessWidget {
             text: TextSpan(
               style: const TextStyle(
                   // height: 1.8,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.w700,
                   fontSize: 19,
                   color: CustomColors.whiteColor),
               children: [
@@ -39,7 +38,7 @@ class StartSideContainer extends StatelessWidget {
                   text: "${getSideName(step)} Side ",
                   style: const TextStyle(
                       fontSize: 19,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w700,
                       color: CustomColors.success500Color),
                 ),
                 const TextSpan(
@@ -53,7 +52,7 @@ class StartSideContainer extends StatelessWidget {
             "Take Vehicle ${getSideName(step)} View",
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
                 color: CustomColors.whiteColor),
           ),
@@ -63,7 +62,7 @@ class StartSideContainer extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Image.asset(
-              ConstantString.carLeftViewNoBg,
+              getSideImage(step),
               fit: BoxFit.cover,
             ),
           ),
@@ -78,6 +77,7 @@ class StartSideContainer extends StatelessWidget {
                     title: "Go back",
                     titleColor: CustomColors.gray700Color,
                     color: CustomColors.whiteColor,
+                    fontSize: 16,
                   ),
                 ),
                 horizontalSpacer(20),
@@ -86,6 +86,7 @@ class StartSideContainer extends StatelessWidget {
                     height: 45,
                     title: "Start",
                     onTap: onTap,
+                    fontSize: 16,
                   ),
                 ),
               ],

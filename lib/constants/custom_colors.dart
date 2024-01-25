@@ -8,6 +8,8 @@ class CustomColors {
   static const gray700Color = Color(0xFF344054);
   static const gray400Color = Color(0xFF98A2B3);
   static const gray100Color = Color(0xFFF2F4F7);
+  static const grayTextColor = Color(0xFF909090);
+
   static Color transGray100Color = const Color(0xFF555555).withOpacity(0.6);
 
   static Color transGrayColor = const Color(0xFF2B2B2B).withOpacity(0.5);

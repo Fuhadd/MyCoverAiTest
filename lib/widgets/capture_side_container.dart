@@ -15,7 +15,7 @@ class CaptureSideContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 1.sw * 0.14,
+      width: 1.sw * 0.15,
       color: CustomColors.blackColor.withOpacity(0.7),
       child: Center(
         child: GestureDetector(
@@ -23,7 +23,6 @@ class CaptureSideContainer extends StatelessWidget {
           child: SvgPicture.asset(
             ConstantString.whiteCaptureIcon,
             height: 210,
-            // fit: BoxFit.cover,
           ),
         ),
       ),

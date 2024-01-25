@@ -27,8 +27,9 @@ class _CountdownTimerState extends State<CountdownTimer>
   }
 
   @override
+  // Disposing the AnimationController
   void dispose() {
-    controller.dispose(); // Dispose the AnimationController
+    controller.dispose();
     super.dispose();
   }
 
