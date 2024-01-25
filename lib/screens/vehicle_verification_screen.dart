@@ -43,7 +43,23 @@ class _VehicleVerificationScreenState
   void initState() {
     controller = CameraController(widget.cameras[0], ResolutionPreset.max);
 
-    checkPermissions();
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {});
+    }).catchError((Object e) {
+      if (e is CameraException) {
+        switch (e.code) {
+          case 'CameraAccessDenied':
+            break;
+
+          default:
+            break;
+        }
+      }
+    });
 
     super.initState();
   }
@@ -54,26 +70,26 @@ class _VehicleVerificationScreenState
     } on CameraException catch (e) {
       if (e.code == 'CameraAccessDenied') {
         // checkPermissions();
-        showDialogModal(
-          context: context,
-          title: "Camera Permission Required",
-          subTitle:
-              "Please open settings, enable camera permission for the app, and restart the app to proceed with verification.",
-          onPressed: () => openAppSettings(),
-          okText: "Open Settings",
-        );
+        //   showDialogModal(
+        //     context: context,
+        //     title: "Camera Permission Required",
+        //     subTitle:
+        //         "Please open settings, enable camera permission for the app, and restart the app to proceed with verification.",
+        //     onPressed: () => openAppSettings(),
+        //     okText: "Open Settings",
+        //   );
 
-        // Navigator.pop(context);
-      } else if (e.code == "AudioAccessDenied") {
-        // checkPermissions();
-        showDialogModal(
-          context: context,
-          title: "Audio Permission Required",
-          subTitle:
-              "Please open settings, enable audio permission for the app, and restart the app to proceed with verification.",
-          onPressed: () => openAppSettings(),
-          okText: "Open Settings",
-        );
+        //   // Navigator.pop(context);
+        // } else if (e.code == "AudioAccessDenied") {
+        //   // checkPermissions();
+        //   showDialogModal(
+        //     context: context,
+        //     title: "Audio Permission Required",
+        //     subTitle:
+        //         "Please open settings, enable audio permission for the app, and restart the app to proceed with verification.",
+        //     onPressed: () => openAppSettings(),
+        //     okText: "Open Settings",
+        //   );
 
         // Navigator.pop(context);
       } else {
